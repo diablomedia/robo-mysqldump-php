@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace DiabloMedia\Robo\Task\MysqldumpPhp;
 
 use Robo\Common\BuilderAwareTrait;
@@ -22,7 +21,7 @@ class DumpDataPartial extends Dump implements BuilderAwareInterface
         'where'          => null
     ];
 
-    public function append($append = true)
+    public function append(bool $append = true) : DumpDataPartial
     {
         if ($append === true) {
             $this->defaultSettings['add-drop-table'] = false;
@@ -34,30 +33,30 @@ class DumpDataPartial extends Dump implements BuilderAwareInterface
         return $this;
     }
 
-    public function withFilters($tableFilters)
+    public function withFilters(array $tableFilters) : DumpDataPartial
     {
         $this->tableFilters = $tableFilters;
 
         return $this;
     }
 
-    public function startingFileSequence($seq)
+    public function startingFileSequence(string $seq) : DumpDataPartial
     {
         $this->startingFileSequence = $seq;
 
         return $this;
     }
 
-    public function toDir($dir)
+    public function toDir(string $dir) : DumpDataPartial
     {
         $this->dir = $dir;
 
         return $this;
     }
 
-    public function run()
+    public function run() : Result
     {
-        $seq = $this->startingFileSequence;
+        $seq = (int) $this->startingFileSequence;
 
         $collection = $this->collectionBuilder();
 
@@ -83,7 +82,7 @@ class DumpDataPartial extends Dump implements BuilderAwareInterface
                     $dumpSettings['no-create-info'] = true;
                 }
 
-                $filename = str_pad($seq, strlen($this->startingFileSequence), 0, STR_PAD_LEFT)
+                $filename = str_pad((string) $seq, strlen($this->startingFileSequence), '0', STR_PAD_LEFT)
                     . '-' . $table
                     . (count($whereList) > 1 ? '-' . $whereCount : '')
                     . '.sql';

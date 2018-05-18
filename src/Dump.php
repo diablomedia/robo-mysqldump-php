@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace DiabloMedia\Robo\Task\MysqldumpPhp;
 
 use Exception;
@@ -41,34 +40,37 @@ class Dump extends BaseTask
      */
     protected $pdoSettings = [];
 
-    public function __construct($dsn, $user, $pass)
+    public function __construct(string $dsn, string $user, string $pass)
     {
         $this->dsn  = $dsn;
         $this->user = $user;
         $this->pass = $pass;
     }
 
-    public function withDumpSettings($dumpSettings)
+    public function withDumpSettings(array $dumpSettings) : Dump
     {
         $this->dumpSettings = $dumpSettings;
 
         return $this;
     }
 
-    public function withPdoSettings($pdoSettings)
+    public function withPdoSettings(array $pdoSettings) : Dump
     {
         $this->pdoSettings = $pdoSettings;
 
         return $this;
     }
 
-    public function toFile($file)
+    public function toFile(string $file) : Dump
     {
         $this->file = $file;
 
         return $this;
     }
 
+    /**
+     * @return array|false
+     */
     protected function getMergedDumpSettings()
     {
         if (!empty(array_intersect_key($this->defaultSettings, $this->dumpSettings))) {
@@ -78,7 +80,7 @@ class Dump extends BaseTask
         return array_merge($this->defaultSettings, $this->dumpSettings);
     }
 
-    public function run()
+    public function run() : Result
     {
         if (!class_exists('Ifsnop\Mysqldump\Mysqldump')) {
             return Result::errorMissingPackage($this, 'Mysqldump', 'ifsnop/mysqldump-php');
