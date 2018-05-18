@@ -9,11 +9,29 @@ class DumpDataPartial extends Dump implements BuilderAwareInterface
 {
     use BuilderAwareTrait;
 
+    /**
+     * @var array
+     */
     protected $tableFilters         = [];
+
+    /**
+     * @var array
+     */
     protected $tokens               = [];
+    
+    /**
+     * @var int
+     */
     protected $startingFileSequence = 1;
+
+    /**
+     * @var string
+     */
     protected $dir;
 
+    /**
+     * @var array
+     */
     protected $defaultSettings = [
         'add-drop-table' => true,
         'include-tables' => [],
@@ -42,7 +60,7 @@ class DumpDataPartial extends Dump implements BuilderAwareInterface
 
     public function startingFileSequence(string $seq) : DumpDataPartial
     {
-        $this->startingFileSequence = $seq;
+        $this->startingFileSequence = (int) $seq;
 
         return $this;
     }
@@ -56,7 +74,7 @@ class DumpDataPartial extends Dump implements BuilderAwareInterface
 
     public function run() : Result
     {
-        $seq = (int) $this->startingFileSequence;
+        $seq = $this->startingFileSequence;
 
         $collection = $this->collectionBuilder();
 
@@ -82,7 +100,7 @@ class DumpDataPartial extends Dump implements BuilderAwareInterface
                     $dumpSettings['no-create-info'] = true;
                 }
 
-                $filename = str_pad((string) $seq, strlen($this->startingFileSequence), '0', STR_PAD_LEFT)
+                $filename = str_pad((string) $seq, strlen((string) $this->startingFileSequence), '0', STR_PAD_LEFT)
                     . '-' . $table
                     . (count($whereList) > 1 ? '-' . $whereCount : '')
                     . '.sql';
