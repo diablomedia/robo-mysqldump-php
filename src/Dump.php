@@ -105,7 +105,7 @@ class Dump extends BaseTask
                 $this->pdoSettings
             );
 
-            $this->printTaskInfo('Dumping data to ' . $this->file);
+            $this->printTaskInfo('Dumping data to {filename}', ['filename' => $this->file]);
 
             $dump->start($this->file);
         } catch (Exception $e) {
