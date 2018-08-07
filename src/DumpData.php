@@ -9,4 +9,15 @@ class DumpData extends Dump
     protected $defaultSettings = [
         'add-drop-table' => true
     ];
+
+    public function append(bool $append = true) : DumpData
+    {
+        if ($append === true) {
+            $this->defaultSettings['add-drop-table'] = false;
+            $this->defaultSettings['no-create-info'] = true;
+            $this->defaultSettings['insert-ignore']  = true;
+        }
+
+        return $this;
+    }
 }

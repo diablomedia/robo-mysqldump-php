@@ -10,7 +10,7 @@
     },
     "require": {
         "consolidation/robo": "~1",
-        "ifsnop/mysqldump-php": "^2.0",
+        "ifsnop/mysqldump-php": "^2.5",
         "php": ">=7.1"
     },
     "require-dev": {

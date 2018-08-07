@@ -5,7 +5,7 @@ use Robo\Common\BuilderAwareTrait;
 use Robo\Contract\BuilderAwareInterface;
 use Robo\Result;
 
-class DumpDataPartial extends Dump implements BuilderAwareInterface
+class DumpDataPartial extends DumpData implements BuilderAwareInterface
 {
     use BuilderAwareTrait;
 
@@ -38,18 +38,6 @@ class DumpDataPartial extends Dump implements BuilderAwareInterface
         'exclude-tables' => [],
         'where'          => null
     ];
-
-    public function append(bool $append = true) : DumpDataPartial
-    {
-        if ($append === true) {
-            $this->defaultSettings['add-drop-table'] = false;
-            $this->defaultSettings['no-create-info'] = true;
-            // https://github.com/ifsnop/mysqldump-php/pull/130
-            // $this->defaultSettings['insert-ignore'] = false;
-        }
-
-        return $this;
-    }
 
     public function withFilters(array $tableFilters) : DumpDataPartial
     {
